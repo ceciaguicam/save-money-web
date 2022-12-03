@@ -10,21 +10,21 @@
     <section>
         <article>
             <h4>TU AHORRO</h4>
-            <p>0.00 €</p>
+            <p class="save"></p>
        </article>
     </section>
     <section>
         <article>
             <h4>INGRESOS</h4>
-            <p>0.00 €</p>
+            <p class="income"></p>
         </article> 
         <article>
             <h4>GASTOS</h4>
-            <p>0.00 €</p>
+            <p class="spent"></p>
        </article> 
     </section>
     <section>
-        <article id="movements">
+        <article class="movements">
             <h4>MOVIMIENTOS</h4>
         </article> 
     </section>
@@ -32,12 +32,12 @@
         <article id="add-movemment">
             <form novalidate>
                 <input id="movement-name" type="text" placeholder="Nombre del gasto" />
-                <input id="movement-amount" type="text" placeholder="Cantidad" />
-                <button type="submit" id="add-movement">Añadir movimiento</button>
+                <input id="movement-amount" type="number" placeholder="Cantidad" />
+                <button type="submit" onclick="addAMovement()">Añadir movimiento</button>
             </form>
             
         </article>
    </section>
-   
+   <script src="./index.js"></script>
 </body>
 </html>
