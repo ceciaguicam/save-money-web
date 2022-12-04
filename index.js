@@ -35,10 +35,10 @@ const addAMovementFormElement = document.querySelector("#new-movement-form")
 addAMovementFormElement.addEventListener("submit", (event) => {
     event.preventDefault()
 
-    let movementName = document.getElementById("movement-name").value //Consigo el valor del input donde se escribe el nombre del movimiento
-    let movementAmount = document.getElementById("movement-amount").value
+    let movementName = document.getElementById("movement-name") //Consigo el valor del input donde se escribe el nombre del movimiento
+    let movementAmount = document.getElementById("movement-amount")
 
-    let movementContent = `<p>${movementName}: ${movementAmount} €</p>` //Añado el nombre del movimiento al contenido del movimiento
+    let movementContent = `<p>${movementName.value}: ${movementAmount.value} €</p>` //Añado el nombre del movimiento al contenido del movimiento
 
     const movement = document.createElement("article") //Creo un article nuevo
 
@@ -46,14 +46,26 @@ addAMovementFormElement.addEventListener("submit", (event) => {
     movementList.prepend(movement) //Añado el article a la sección de movimientos
 
     changeAmounts(movementAmount)
+    console.log(save)
+    console.log(spent)
+    console.log(income)
+
+    movementName.value = ""
+    movementAmount.value = ""
 })
 
 
 function changeAmounts(movementAmount){
+    let money = parseFloat(movementAmount)
+    
     if (movementAmount > 0){
-        save += movementAmount
+        save += money
     }
     else {
-        spent -= movementAmount
+        spent -= money
     }
+
+    saveAmount.innerHTML = `${save} €`
+    incomeAmount.innerHTML = `${income} €`
+    spentAmount.innerHTML = `${spent} €`
 }
