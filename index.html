@@ -24,19 +24,20 @@
        </article> 
     </section>
     <section>
-        <article class="movements">
+        <article>
             <h4>MOVIMIENTOS</h4>
         </article> 
-    </section>
-   <section>
         <article id="add-movemment">
-            <form novalidate>
+            <form id="new-movement-form" novalidate>
                 <input id="movement-name" type="text" placeholder="Nombre del gasto" />
                 <input id="movement-amount" type="number" placeholder="Cantidad" />
-                <button type="submit" onclick="addAMovement()">Añadir movimiento</button>
+                <button type="submit" id="add-movement-button">Añadir movimiento</button>
             </form>
-            
         </article>
+        <article class="movements"></article>
+    </section>
+    <section>
+        
    </section>
    <script src="./index.js"></script>
 </body>
