@@ -45,7 +45,7 @@ addAMovementFormElement.addEventListener("submit", (event) => {
     movement.innerHTML = movementContent //Añado el contenido del movimiento al article creado
     movementList.prepend(movement) //Añado el article a la sección de movimientos
 
-    changeAmounts(movementAmount)
+    changeAmounts(movementAmount.value)
     console.log(save)
     console.log(spent)
     console.log(income)
@@ -56,15 +56,18 @@ addAMovementFormElement.addEventListener("submit", (event) => {
 
 
 function changeAmounts(movementAmount){
-    let money = parseFloat(movementAmount)
-    
-    if (movementAmount > 0){
-        save += money
+
+    if (movementAmount.includes("-")){
+        let money = parseFloat(movementAmount.replace("-", ""))
+        spent += money
+        save -= money
     }
     else {
-        spent -= money
+        money = parseFloat(movementAmount)
+        income += money
+        save += money
     }
-
+    
     saveAmount.innerHTML = `${save} €`
     incomeAmount.innerHTML = `${income} €`
     spentAmount.innerHTML = `${spent} €`
