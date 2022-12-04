@@ -18,6 +18,8 @@ Necesitamos desarrollar una web que nos ayude a gestionar nuestros ingresos y ga
 
 const movementList = document.querySelector(".movements") //Identifico el sitio donde pintaré los movimientos
 
+let movementId = 0
+
 let spent = 0 //Sumatorio de los gastos
 let income = 0 //Sumatorio de los ingresos
 let save = 0 //Diferencia entre los ingresos y los gastos
@@ -35,10 +37,12 @@ const addAMovementFormElement = document.querySelector("#new-movement-form")
 addAMovementFormElement.addEventListener("submit", (event) => {
     event.preventDefault()
 
+    movementId += 1
+
     let movementName = document.getElementById("movement-name") //Consigo el valor del input donde se escribe el nombre del movimiento
     let movementAmount = document.getElementById("movement-amount")
 
-    let movementContent = `<p>${movementName.value}: ${movementAmount.value} €</p>` //Añado el nombre del movimiento al contenido del movimiento
+    let movementContent = `<article id=${movementId}><p>${movementName.value}: ${movementAmount.value} €</p> <button onclick="deleteMovement(${movementId})">X Borrar movimiento</button></article>` //Añado el nombre del movimiento al contenido del movimiento
 
     const movement = document.createElement("article") //Creo un article nuevo
 
@@ -46,9 +50,6 @@ addAMovementFormElement.addEventListener("submit", (event) => {
     movementList.prepend(movement) //Añado el article a la sección de movimientos
 
     changeAmounts(movementAmount.value)
-    console.log(save)
-    console.log(spent)
-    console.log(income)
 
     movementName.value = ""
     movementAmount.value = ""
@@ -56,7 +57,7 @@ addAMovementFormElement.addEventListener("submit", (event) => {
 
 
 function changeAmounts(movementAmount){
-
+    
     if (movementAmount.includes("-")){
         let money = parseFloat(movementAmount.replace("-", ""))
         spent += money
@@ -67,8 +68,13 @@ function changeAmounts(movementAmount){
         income += money
         save += money
     }
-    
+
     saveAmount.innerHTML = `${save} €`
     incomeAmount.innerHTML = `${income} €`
     spentAmount.innerHTML = `${spent} €`
+}
+
+function deleteMovement(movementId) {
+    const deletedMovement = document.getElementById(movementId)
+    deletedMovement.remove()
 }
