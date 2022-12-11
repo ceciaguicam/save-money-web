@@ -1,36 +1,18 @@
-/*
-### Control de gastos
 
-Necesitamos desarrollar una web que nos ayude a gestionar nuestros ingresos y gastos, con el objetivo de conocer el dinero que tenenos ahorrado.
-
-## Requisitos indispensables
-1. La aplicación deberá mostrar en todo momento el total de gastos, ingresos y el dinero total que tenemos ahorrado.
-2. Podremos añadir un ingreso o un gasto incluyendo un concepto.
-3. Podremos borrar cualquier gasto o ingreso que hayamos introducido.
-
-## Requisitos opcionales
-4. Si cerramos la web y volvemos a entrar, tenemos que recuperar todos los gastos e ingresos que habíamos introducido, así como el ahorro total.
-
-## Ejemplo
-![Imagen inicial](./example.JPG)
-![Gastos introducidos](./example2.JPG)
-*/
-
-const movementList = document.querySelector(".movements") //Identifico el sitio donde pintaré los movimientos
+const movementList = document.querySelector(".movements") 
 
 let movementId = 0
+let moneyId = 0
 
-let spent = 0 //Sumatorio de los gastos
-let income = 0 //Sumatorio de los ingresos
-let save = 0 //Diferencia entre los ingresos y los gastos
+let spent = 0 
+let income = 0 
+let save = 0 
 
-let saveAmount = document.querySelector(".save") //Identifico el sitio donde se actualizará el ahorro
-let incomeAmount = document.querySelector(".income") //Identifico el sito donde se actualizará el total de ingresos
-let spentAmount = document.querySelector(".spent") //Identifico el sito donde se actualizará el total de gastos
+let saveAmount = document.querySelector(".save") 
+let incomeAmount = document.querySelector(".income") 
+let spentAmount = document.querySelector(".spent") 
 
-saveAmount.innerHTML = `${save} €`
-incomeAmount.innerHTML = `${income} €`
-spentAmount.innerHTML = `${spent} €`
+renderAmounts()
 
 const addAMovementFormElement = document.querySelector("#new-movement-form")
 
@@ -38,16 +20,19 @@ addAMovementFormElement.addEventListener("submit", (event) => {
     event.preventDefault()
 
     movementId += 1
+    moneyId += 1
 
-    let movementName = document.getElementById("movement-name") //Consigo el valor del input donde se escribe el nombre del movimiento
+    let movementName = document.getElementById("movement-name") 
     let movementAmount = document.getElementById("movement-amount")
 
-    let movementContent = `<article id=${movementId}><p>${movementName.value}: ${movementAmount.value} €</p> <button onclick="deleteMovement(${movementId})">X Borrar movimiento</button></article>` //Añado el nombre del movimiento al contenido del movimiento
+    let movementContent = `<p>${movementName.value}:</p> <p id=money-${moneyId}>${movementAmount.value} €</p> 
+                            <button onclick="deleteMovement(${movementId}, ${moneyId})">X Borrar movimiento</button>` 
 
-    const movement = document.createElement("article") //Creo un article nuevo
+    const movement = document.createElement("article") 
+    movement.setAttribute("id", movementId)
 
-    movement.innerHTML = movementContent //Añado el contenido del movimiento al article creado
-    movementList.prepend(movement) //Añado el article a la sección de movimientos
+    movement.innerHTML = movementContent 
+    movementList.prepend(movement) 
 
     changeAmounts(movementAmount.value)
 
@@ -64,17 +49,36 @@ function changeAmounts(movementAmount){
         save -= money
     }
     else {
-        money = parseFloat(movementAmount)
+        let money = parseFloat(movementAmount)
         income += money
         save += money
     }
 
+    renderAmounts()
+}
+
+function deleteMovement(movementId, moneyId) {
+    const deletedMovement = document.getElementById(movementId)
+    let deletedMoney = document.getElementById("money-"+moneyId).innerHTML
+    deletedMoney = deletedMoney.replace("€", "")
+    deletedMoney = parseFloat(deletedMoney)
+    save -= deletedMoney
+    if (deletedMoney < 0) {
+        spent += deletedMoney
+    }
+    else{
+        income -= deletedMoney
+    }
+    deletedMovement.remove()
+
+    renderAmounts()
+}
+
+function renderAmounts() {
     saveAmount.innerHTML = `${save} €`
     incomeAmount.innerHTML = `${income} €`
     spentAmount.innerHTML = `${spent} €`
 }
 
-function deleteMovement(movementId) {
-    const deletedMovement = document.getElementById(movementId)
-    deletedMovement.remove()
-}
+
+//Validar que el form está completo
